@@ -6,7 +6,7 @@ namespace Greed_Flame_Tale_RPG
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("NO");
         }
     }
 }
