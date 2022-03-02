@@ -1,4 +1,4 @@
-# GreedFlameTale-RPG
+# GreedFlameTale
 
 **Bootcamp GFT Start 4 .NET - Digital Innovation One**
 
