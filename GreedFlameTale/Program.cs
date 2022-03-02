@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Greed_Flame_Tale_RPG
+namespace GreedFlameTale
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("NO");
+            Console.WriteLine("Hello World!");
         }
     }
 }

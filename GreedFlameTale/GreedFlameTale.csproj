@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>Greed_Flame_Tale_RPG</RootNamespace>
   </PropertyGroup>
 
 </Project>
