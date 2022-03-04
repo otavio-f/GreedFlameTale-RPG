@@ -1,68 +1,60 @@
 using System;
-using GreedFlameTale.Interface;
 
 namespace GreedFlameTale.Model
 {
-    public class Measure : IClampedUnit
+    public class Measure
     {
-
-        private ushort _value;
-        private ushort _maximum;
-
-        public ushort Value => this._value;
-        public ushort Maximum => this._maximum;
-        bool IClampedUnit.IsFull => this._value == this._maximum;
-        bool IClampedUnit.IsEmpty => this._value == 0;
+        public ushort Value { get; private set; }
+        public ushort Maximum { get; init; }
+        public bool IsFull => this.Value == this.Maximum;
+        public bool IsEmpty => this.Value == 0;
 
         public Measure(ushort maximum)
         {
-            this._value = maximum;
-            this._maximum = maximum;
+            this.Value = maximum;
+            this.Maximum = maximum;
         }
 
         public Measure(long value, long maximum)
         {
             if (maximum > ushort.MaxValue || maximum < 0)
                 throw new ArgumentException("Invalid maximum value.");
-            this._maximum = (ushort) maximum;
-            this._value = (ushort) Math.Clamp(value, 0, maximum);
+            this.Maximum = (ushort) maximum;
+            this.Value = (ushort) Math.Clamp(value, 0, maximum);
         }
 
-        public void Empty() => this._value = 0;
+        public void Empty() => this.Value = 0;
 
-        public void Fill() => this._value = this._maximum;
+        public void Fill() => this.Value = this.Maximum;
 
-        public IClampedUnit Add(IClampedUnit other)
+        public void DecreaseBy(Measure other)
         {
-            var newMax = other.Maximum + this.Maximum;
-            var newVal = other.Value + this.Value;
+            var newVal = Math.Max(0, this.Value - other.Value);
+            this.Value = (ushort) newVal;
+        }
+
+        public void IncreaseBy(Measure other)
+        {
+            var newVal = Math.Max(0, this.Value - other.Value);
+            this.Value = (ushort) newVal;
+        }
+
+        public Measure Clone() => new Measure(this.Value, this.Maximum);
+
+        public int CompareTo(Measure other) => this.Value.CompareTo(other.Value);
+
+        public static Measure operator + (Measure a, Measure b)
+        {
+            var newMax = a.Maximum + b.Maximum;
+            var newVal = a.Value + b.Value;
             return new Measure(newVal, newMax);
         }
 
-        public IClampedUnit Sub(IClampedUnit other)
+        public static Measure operator - (Measure a, Measure b)
         {
-            var newMax = Math.Max(other.Maximum, this.Maximum);
-            var newVal = this.Value - other.Value;
+            var newMax = Math.Max(a.Maximum, b.Maximum);
+            var newVal = a.Value - b.Value;
             return new Measure(newVal, newMax);
-        }
-
-        public void DecreaseBy(IClampedUnit other)
-        {
-            var newVal = Math.Max(0, this.Value - other.Value);
-            this._value = (ushort) newVal;
-        }
-
-        public void IncreaseBy(IClampedUnit other)
-        {
-            var newVal = Math.Max(0, this.Value - other.Value);
-            this._value = (ushort) newVal;
-        }
-
-        public IClampedUnit Clone() => new Measure(this.Value, this.Maximum);
-
-        public int CompareTo(IClampedUnit other)
-        {
-            return this.Value.CompareTo(other.Value);
         }
     }
 }
