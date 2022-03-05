@@ -1,44 +1,37 @@
-﻿using GreedFlameTale.Interface;
-
-namespace GreedFlameTale.Model.Character
+﻿namespace GreedFlameTale.Model.Character
 {
-    class Knight : IGameCharacter
+    class Knight : GameCharacterBase
     {
-        public string Name { get; set; }
-
-        public AttributeHolder Attributes { get; init; }
-
         public Knight(string name)
         {
-            Name = name;
+            this.Name = name;
             this.Attributes = new AttributeHolder()
             {
                 HitPoints = new Measure(10),
                 Stamina = new Measure(5),
-                Magic = new Measure(1),
+                Magic = new Measure(0),
                 AttackPower = new Measure(3),
                 Armor = new Measure(1),
                 NormalCost = new Measure(1),
                 SpecialCost = new Measure(2),
-                HealPoints = new Measure(3),
-                RestPoints = new Measure(1)
+                HealPoints = new Measure(2),
+                RestPoints = new Measure(2)
             };
         }
 
-        public void Attack(IGameCharacter target)
+        public override void Attack(GameCharacterBase target)
         {
-            this.Attributes.Stamina.DecreaseBy(this.Attributes.NormalCost);
             var damage = this.Attributes.AttackPower - target.Attributes.Armor;
             target.Attributes.HitPoints.DecreaseBy(damage);
-            target.GotAttacked(this);
+            base.Attack(target);
         }
 
-        public void SpecialAttack(IGameCharacter target)
+        public override void SpecialAttack(GameCharacterBase target)
         {
-            this.Attributes.Stamina.DecreaseBy(this.Attributes.SpecialCost);
-            var damage = this.Attributes.AttackPower + (new Measure(1));
+            var damage = this.Attributes.AttackPower.Clone();
+            damage.Fill();
             target.Attributes.HitPoints.DecreaseBy(damage);
-            target.GotAttacked(this);
+            base.SpecialAttack(target);
         }
     }
 }
