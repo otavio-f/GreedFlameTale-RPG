@@ -2,6 +2,10 @@
 {
     class Mage : GameCharacterBase
     {
+        /// <summary>
+        /// A powerful mage capable of powerful spells
+        /// </summary>
+        /// <param name="name"></param>
         public Mage(string name)
         {
             this.Name = name;
@@ -9,30 +13,40 @@
             {
                 HitPoints = new Measure(10),
                 Stamina = new Measure(5),
-                Magic = new Measure(3),
+                MagicPower = new Measure(3),
                 AttackPower = new Measure(0),
                 Armor = new Measure(0),
                 NormalCost = new Measure(2),
                 SpecialCost = new Measure(3),
-                HealPoints = new Measure(1),
-                RestPoints = new Measure(1)
+                HealPoints = new Measure(3),
+                RestPoints = new Measure(3)
             };
         }
 
+        /// <summary>
+        /// Tme mage unleashes a magic projectile at the target
+        /// </summary>
+        /// <param name="target">The target</param>
         public override void Attack(GameCharacterBase target)
         {
-            this.Attributes.Stamina.DecreaseBy(this.Attributes.NormalCost);
-            var damage = this.Attributes.Magic - target.Attributes.Armor;
+            var damage = this.Attributes.MagicPower.Clone();
+            damage.DecreaseBy(target.Attributes.Armor);
             target.Attributes.HitPoints.DecreaseBy(damage);
-            target.GotAttacked(this);
+            base.Attack(target);
         }
 
+        /// <summary>
+        /// The mage increases it's own <see cref="AttributeHolder.MagicPower"/> and unleases a magic explosion at the target.
+        /// </summary>
+        /// <param name="target">The target</param>
         public override void SpecialAttack(GameCharacterBase target)
         {
-            this.Attributes.Stamina.DecreaseBy(this.Attributes.SpecialCost);
-            var damage = this.Attributes.Magic + this.Attributes.Magic - target.Attributes.Armor;
+            this.Attributes.MagicPower.OffsetBy(+1);
+            this.Attributes.Stamina.OffsetBy(+1);
+            var damage = this.Attributes.MagicPower;
+            damage.DecreaseBy(target.Attributes.Armor);
             target.Attributes.HitPoints.DecreaseBy(damage);
-            target.GotAttacked(this);
+            base.SpecialAttack(target);
         }
     }
 }
