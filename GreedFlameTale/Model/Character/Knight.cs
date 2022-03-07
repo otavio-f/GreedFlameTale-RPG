@@ -1,14 +1,13 @@
 ﻿namespace GreedFlameTale.Model.Character
 {
-    class Knight : GameCharacterBase
+    class Knight : CharacterBase
     {
         /// <summary>
         /// A powerful warrior with high resilience and resistance
         /// </summary>
         /// <param name="name"></param>
-        public Knight(string name)
+        public Knight(string name) : base(name)
         {
-            this.Name = name;
             this.Attributes = new AttributeHolder()
             {
                 HitPoints = new Measure(10),
@@ -27,7 +26,7 @@
         /// The warrior slashes the foe.
         /// </summary>
         /// <param name="target">The foe</param>
-        public override void Attack(GameCharacterBase target)
+        public override void Attack(CharacterBase target)
         {
             var damage = this.Attributes.AttackPower.Clone();
             damage.DecreaseBy(target.Attributes.Armor);
@@ -39,7 +38,7 @@
         /// He shashes the foe with all his strength, ignoring any armor.
         /// </summary>
         /// <param name="target"></param>
-        public override void SpecialAttack(GameCharacterBase target)
+        public override void SpecialAttack(CharacterBase target)
         {
             var damage = this.Attributes.AttackPower.Clone();
             damage.Fill();

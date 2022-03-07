@@ -3,11 +3,10 @@
     /// <summary>
     /// A fast fighter that specializes on crippling and damaging a foe from the shadows.
     /// </summary>
-    class Assassin : GameCharacterBase
+    class Assassin : CharacterBase
     {
-        public Assassin(string name)
+        public Assassin(string name): base(name)
         {
-            this.Name = name;
             this.Attributes = new AttributeHolder()
             {
                 HitPoints = new Measure(10),
@@ -26,7 +25,7 @@
         /// An attack that combines both magical and physical power.
         /// </summary>
         /// <param name="target">The target</param>
-        public override void Attack(GameCharacterBase target)
+        public override void Attack(CharacterBase target)
         {
             var damage = this.Attributes.AttackPower + this.Attributes.MagicPower;
             damage.DecreaseBy(target.Attributes.Armor);
@@ -38,7 +37,7 @@
         /// An attack that ignores any defense and cripples the target
         /// </summary>
         /// <param name="target"></param>
-        public override void SpecialAttack(GameCharacterBase target)
+        public override void SpecialAttack(CharacterBase target)
         {
             var damage = this.Attributes.AttackPower;
             target.Attributes.HitPoints.DecreaseBy(damage);

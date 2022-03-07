@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace GreedFlameTale.Model
 {
     /// <summary>
     /// Class that represents a measurement unit with a value between an upper and lower limit.
     /// </summary>
-    public class Measure
+    public class Measure : IEquatable<Measure>
     {
         /// <summary>
         /// The current value, range from <see langword="0"/> to <see cref="Measure.Maximum"/>.
@@ -32,9 +33,17 @@ namespace GreedFlameTale.Model
         /// <summary>
         /// The percentage of "fullness", from 0 to 100
         /// </summary>
-        public ushort Percentage => (ushort) Math.Ceiling(100.0 * this.Value / this.Maximum);
+        public ushort Percentage
+        {
+            get
+            {
+                if (this.Maximum != 0) 
+                    return (ushort)Math.Ceiling(100.0 * this.Value / this.Maximum);
+                return 0;
+            }
+        }
 
-        
+
         /// <summary>
         /// Constructor to set both the upper limit and value
         /// </summary>
@@ -52,10 +61,8 @@ namespace GreedFlameTale.Model
         /// <param name="maximum">The <see cref="Maximum"/>, clamped between <see langword="0"/> and <see langword="ushort.MaxValue"/></param>
         public Measure(long value, long maximum)
         {
-            if (maximum > ushort.MaxValue || maximum < 0)
-                throw new ArgumentException("Invalid maximum value.");
-            this.Maximum = (ushort) maximum;
-            this.Value = (ushort) Math.Clamp(value, 0, maximum);
+            this.Maximum = (ushort)Math.Clamp(maximum, 0L, ushort.MaxValue);
+            this.Value = (ushort) Math.Clamp(value, 0L, this.Maximum);
         }
 
         /// <summary>
@@ -74,7 +81,7 @@ namespace GreedFlameTale.Model
         /// <param name="other"></param>
         public void DecreaseBy(Measure other)
         {
-            var newVal = Math.Max(0, this.Value - other.Value);
+            var newVal = Math.Max(this.Value - other.Value, 0L);
             this.Value = (ushort) newVal;
         }
 
@@ -84,7 +91,7 @@ namespace GreedFlameTale.Model
         /// <param name="other"></param>
         public void IncreaseBy(Measure other)
         {
-            var newVal = Math.Max(0, this.Value - other.Value);
+            var newVal = Math.Min((long) this.Value + other.Value, this.Maximum);
             this.Value = (ushort) newVal;
         }
 
@@ -115,6 +122,26 @@ namespace GreedFlameTale.Model
         /// </returns>
         public int CompareTo(Measure other) => this.Value.CompareTo(other.Value);
 
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Measure);
+        }
+
+        /// <inheritdoc/>
+        public bool Equals(Measure other)
+        {
+            return other != null &&
+                   Value == other.Value &&
+                   Maximum == other.Maximum;
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Value, Maximum);
+        }
+
         /// <summary>
         /// Sums the <see cref="Value"/> and <see cref="Maximum"/> from two instances of <see cref="Measure"/>
         /// </summary>
@@ -135,11 +162,23 @@ namespace GreedFlameTale.Model
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns>The resulting <see cref="Measure"/></returns>
-        public static Measure operator - (Measure a, Measure b)
+        public static Measure operator -(Measure a, Measure b)
         {
             var newMax = Math.Max(a.Maximum, b.Maximum);
             var newVal = a.Value - b.Value;
             return new Measure(newVal, newMax);
+        }
+
+        /// <inheritdoc/>
+        public static bool operator ==(Measure left, Measure right)
+        {
+            return EqualityComparer<Measure>.Default.Equals(left, right);
+        }
+
+        /// <inheritdoc/>
+        public static bool operator !=(Measure left, Measure right)
+        {
+            return !(left == right);
         }
     }
 }

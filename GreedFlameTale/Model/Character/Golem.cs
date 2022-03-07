@@ -4,11 +4,10 @@
     /// A foul soul sealed in a giant clay statue.<br/>
     /// The Golem is very slow, but has very powerful attacks and resistance.
     /// </summary>
-    class Golem : GameCharacterBase
+    class Golem : CharacterBase
     {
-        public Golem(string name)
+        public Golem(string name) : base(name)
         {
-            this.Name = name;
             this.Attributes = new AttributeHolder()
             {
                 HitPoints = new Measure(20),
@@ -32,7 +31,7 @@
         /// A powerful attack that smashes the target.
         /// </summary>
         /// <param name="target"></param>
-        public override void Attack(GameCharacterBase target)
+        public override void Attack(CharacterBase target)
         {
             var damage = this.Attributes.AttackPower.Clone();
             damage.DecreaseBy(target.Attributes.Armor);
@@ -45,7 +44,7 @@
         /// and unleashes a powerful attack that ignores armor.
         /// </summary>
         /// <param name="target"></param>
-        public override void SpecialAttack(GameCharacterBase target)
+        public override void SpecialAttack(CharacterBase target)
         {
             this.Attributes.HitPoints.Fill();
             var damage = this.Attributes.AttackPower;

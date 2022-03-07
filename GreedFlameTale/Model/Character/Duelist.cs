@@ -5,12 +5,11 @@ namespace GreedFlameTale.Model.Character
     /// Represents a Duelist character.
     /// A nimble fighter with a lighter sword, if compared to the <see cref="Knight"/>
     /// </summary>
-    class Duelist : GameCharacterBase
+    class Duelist : CharacterBase
     {
         private Random _rand;
-        public Duelist(string name)
+        public Duelist(string name): base(name)
         {
-            this.Name = name;
             this._rand = new Random();
             this.Attributes = new AttributeHolder()
             {
@@ -47,7 +46,7 @@ namespace GreedFlameTale.Model.Character
         /// A attack with 25% chance of striking a critical point on the target.
         /// </summary>
         /// <param name="target">The attacked character.</param>
-        public override void Attack(GameCharacterBase target)
+        public override void Attack(CharacterBase target)
         {
             var damage = GetDamageOrCrit(this.Attributes.AttackPower, 25);
             damage.DecreaseBy(target.Attributes.Armor);
@@ -59,7 +58,7 @@ namespace GreedFlameTale.Model.Character
         /// A attack with 50% chance of striking a critical point on the target.
         /// </summary>
         /// <param name="target"></param>
-        public override void SpecialAttack(GameCharacterBase target)
+        public override void SpecialAttack(CharacterBase target)
         {
             var damage = GetDamageOrCrit(this.Attributes.AttackPower, 50);
             damage.DecreaseBy(target.Attributes.Armor);

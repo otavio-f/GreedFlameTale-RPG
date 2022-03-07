@@ -5,7 +5,7 @@ namespace GreedFlameTale.Model
     /// <summary>
     /// Base character model
     /// </summary>
-    public abstract class GameCharacterBase
+    public class CharacterBase
     {
         /// <summary>
         /// Character's name
@@ -31,6 +31,15 @@ namespace GreedFlameTale.Model
         /// If the character can cast a special attack
         /// </summary>
         public bool CanSpecialAttack => this.Attributes.Stamina.CompareTo(this.Attributes.SpecialCost) >= 0;
+
+        /// <summary>
+        /// Constructor with a name
+        /// </summary>
+        /// <param name="name"></param>
+        private protected CharacterBase(string name)
+        {
+            this.Name = name;
+        }
 
         /// <summary>
         /// Applies the stamina cost of attacking
@@ -61,14 +70,14 @@ namespace GreedFlameTale.Model
         /// Action to be executed after the character is attacked
         /// </summary>
         /// <param name="attacker"></param>
-        public virtual void GotAttacked(GameCharacterBase attacker) { }
+        public virtual void GotAttacked(CharacterBase attacker) { }
         
         /// <summary>
         /// Attack a target.<br/>
         /// The base action only applies the cost and trigger the target reaction
         /// </summary>
         /// <param name="target">The target</param>
-        public virtual void Attack(GameCharacterBase target)
+        public virtual void Attack(CharacterBase target)
         {
             this.ApplyCost();
             target.GotAttacked(this);
@@ -79,7 +88,7 @@ namespace GreedFlameTale.Model
         /// This base action only applies the special cost and trigger the target reaction
         /// </summary>
         /// <param name="target">The target</param>
-        public virtual void SpecialAttack(GameCharacterBase target)
+        public virtual void SpecialAttack(CharacterBase target)
         {
             this.ApplySpecialCost();
             target.GotAttacked(this);

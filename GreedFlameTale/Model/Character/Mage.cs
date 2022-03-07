@@ -1,14 +1,13 @@
 ﻿namespace GreedFlameTale.Model.Character
 {
-    class Mage : GameCharacterBase
+    class Mage : CharacterBase
     {
         /// <summary>
         /// A powerful mage capable of powerful spells
         /// </summary>
         /// <param name="name"></param>
-        public Mage(string name)
+        public Mage(string name) : base(name)
         {
-            this.Name = name;
             this.Attributes = new AttributeHolder()
             {
                 HitPoints = new Measure(10),
@@ -27,7 +26,7 @@
         /// Tme mage unleashes a magic projectile at the target
         /// </summary>
         /// <param name="target">The target</param>
-        public override void Attack(GameCharacterBase target)
+        public override void Attack(CharacterBase target)
         {
             var damage = this.Attributes.MagicPower.Clone();
             damage.DecreaseBy(target.Attributes.Armor);
@@ -39,7 +38,7 @@
         /// The mage increases it's own <see cref="AttributeHolder.MagicPower"/> and unleases a magic explosion at the target.
         /// </summary>
         /// <param name="target">The target</param>
-        public override void SpecialAttack(GameCharacterBase target)
+        public override void SpecialAttack(CharacterBase target)
         {
             this.Attributes.MagicPower.OffsetBy(+1);
             this.Attributes.Stamina.OffsetBy(+1);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GreedFlameTale.Model;
+using System;
 
 namespace GreedFlameTale
 {
@@ -6,7 +7,8 @@ namespace GreedFlameTale
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var x = new Game();
+            x.Mainloop();
         }
     }
 }
