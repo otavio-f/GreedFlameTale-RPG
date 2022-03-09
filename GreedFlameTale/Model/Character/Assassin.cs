@@ -28,9 +28,7 @@
         public override void Attack(CharacterBase target)
         {
             var damage = this.Attributes.AttackPower + this.Attributes.MagicPower;
-            damage.DecreaseBy(target.Attributes.Armor);
-            target.Attributes.HitPoints.DecreaseBy(damage);
-            base.Attack(target);
+            target.ApplyDamage(damage, false, this);
         }
 
         /// <summary>
@@ -40,6 +38,7 @@
         public override void SpecialAttack(CharacterBase target)
         {
             var damage = this.Attributes.AttackPower;
+            target.ApplyDamage(damage, true, this);
             target.Attributes.HitPoints.DecreaseBy(damage);
             var cripple = this.Attributes.MagicPower;
             target.Attributes.Stamina.DecreaseBy(cripple);

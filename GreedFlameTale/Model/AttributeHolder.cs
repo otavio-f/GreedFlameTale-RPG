@@ -3,8 +3,23 @@
     /// <summary>
     /// This record is The attributes collection.
     /// </summary>
-    public record AttributeHolder
+    public class AttributeHolder
     {
+        /// <summary>
+        /// If the character can attack
+        /// </summary>
+        public bool CanAttack => this.Stamina.CompareTo(this.NormalCost) >= 0;
+
+        /// <summary>
+        /// If the character can cast a special attack
+        /// </summary>
+        public bool CanSpecialAttack => this.Stamina.CompareTo(this.SpecialCost) >= 0;
+
+        /// <summary>
+        /// If the character is alive
+        /// </summary>
+        public bool IsAlive => !this.HitPoints.IsEmpty;
+
         /// <summary>
         /// Hit Points, aka HP
         /// </summary>

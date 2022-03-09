@@ -18,21 +18,6 @@ namespace GreedFlameTale.Model
         public AttributeHolder Attributes { get; init; }
 
         /// <summary>
-        /// If the character is alive
-        /// </summary>
-        public bool IsAlive => !this.Attributes.HitPoints.IsEmpty;
-        
-        /// <summary>
-        /// If the character can attack
-        /// </summary>
-        public bool CanAttack => this.Attributes.Stamina.CompareTo(this.Attributes.NormalCost) >= 0;
-        
-        /// <summary>
-        /// If the character can cast a special attack
-        /// </summary>
-        public bool CanSpecialAttack => this.Attributes.Stamina.CompareTo(this.Attributes.SpecialCost) >= 0;
-
-        /// <summary>
         /// Constructor with a name
         /// </summary>
         /// <param name="name"></param>
@@ -44,7 +29,7 @@ namespace GreedFlameTale.Model
         /// <summary>
         /// Applies the stamina cost of attacking
         /// </summary>
-        private void ApplyCost()
+        public void ApplyCost()
         {
             var sta = this.Attributes.Stamina;
             var cost = this.Attributes.NormalCost;
@@ -54,7 +39,7 @@ namespace GreedFlameTale.Model
         /// <summary>
         /// Applies the stamina cost of casting a special attack
         /// </summary>
-        private void ApplySpecialCost()
+        public void ApplySpecialCost()
         {
             var sta = this.Attributes.Stamina;
             var cost = this.Attributes.SpecialCost;
@@ -77,10 +62,25 @@ namespace GreedFlameTale.Model
         /// The base action only applies the cost and trigger the target reaction
         /// </summary>
         /// <param name="target">The target</param>
-        public virtual void Attack(CharacterBase target)
+        public virtual void Attack(CharacterBase target) 
         {
             this.ApplyCost();
             target.GotAttacked(this);
+        }
+
+        /// <summary>
+        /// Apply damage to this character's <see cref="AttributeHolder.HitPoints"/><br/>
+        /// This attack triggers a reaction. See <see cref="CharacterBase.GotAttacked(CharacterBase)"/>
+        /// </summary>
+        /// <param name="damage">The damage</param>
+        /// <param name="ignoreArmor">If <see langword="true"/>, bypass <see cref="AttributeHolder.Armor"/></param>
+        /// <param name="attacker">The attacker</param>
+        public void ApplyDamage(Measure damage, bool ignoreArmor, CharacterBase attacker)
+        {
+            if (!ignoreArmor)
+                damage.DecreaseBy(this.Attributes.Armor);
+            this.Attributes.HitPoints.DecreaseBy(damage);
+            this.GotAttacked(attacker);
         }
 
         /// <summary>
@@ -97,11 +97,11 @@ namespace GreedFlameTale.Model
         /// <summary>
         /// Base action for recovering <see cref="AttributeHolder.Stamina"/>
         /// </summary>
-        public virtual void Rest() => this.Attributes.Stamina.IncreaseBy(this.Attributes.RestPoints);
+        public virtual void Rest()
+        {
+            this.Attributes.Stamina.IncreaseBy(this.Attributes.RestPoints);
+            this.Attributes.HitPoints.IncreaseBy(this.Attributes.HealPoints);
+        }
 
-        /// <summary>
-        /// Base action for recovering <see cref="AttributeHolder.HitPoints"/>
-        /// </summary>
-        public virtual void Heal() => this.Attributes.HitPoints.IncreaseBy(this.Attributes.HealPoints);
     }
 }
