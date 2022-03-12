@@ -17,7 +17,7 @@ namespace GreedFlameTale.Model.GameEngine
 
         public List<Character> PlayerTeam { get; private set; }
         public List<Character> EnemyTeam { get; private set; }
-        //private GameView MainObserver { get; init; }
+        private GameView MainObserver { get; init; }
 
         private EnemyAI Enemy { get; init; }
 
@@ -49,18 +49,18 @@ namespace GreedFlameTale.Model.GameEngine
         }
 
         /// TODO: USE EVENTS TO TRACK WHICH ATTRIBUTE WAS MODIFIED
-        private void ExecuteAttack(Character attacker, Character target)
+        private void ExecuteAttack(Player player, Character attacker)
         {
-            var target = MainObserver.AskForTarget(EnemyTeam);
+            var target = MainObserver.AskForTarget(player, EnemyTeam);
             attacker.Habilities.Attack.Apply(target);
             target.Habilities.AttackReaction.Apply(attacker);
             MainObserver.AttackFeedback(attacker, target);
         }
 
         /// TODO: USE EVENTS TO TRACK WHICH ATTRIBUTE WAS MODIFIED
-        private void ExecuteSpecialAttack(Character attacker)
+        private void ExecuteSpecialAttack(Player player, Character attacker)
         {
-            var target = MainObserver.AskForTarget(EnemyTeam);
+            var target = MainObserver.AskForTarget(player, EnemyTeam);
             attacker.Habilities.SpecialAttack.Apply(target);
             target.Habilities.AttackReaction.Apply(attacker);
             MainObserver.AttackFeedback(attacker, target);
@@ -101,10 +101,10 @@ namespace GreedFlameTale.Model.GameEngine
                 switch (action.Type)
                 {
                     case (Act.ATTACK):
-                        ExecuteAttack(attacker);
+                        ExecuteAttack(player, attacker);
                         break;
                     case (Act.SPECIAL_ATTACK):
-                        ExecuteSpecialAttack(attacker);
+                        ExecuteSpecialAttack(player, attacker);
                         break;
                     default:
                         Rest(attacker);

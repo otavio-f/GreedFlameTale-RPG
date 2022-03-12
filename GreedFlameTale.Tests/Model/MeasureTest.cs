@@ -6,7 +6,7 @@ namespace GreedFlameTale.Tests.Model
     public class MeasureTest
     {
         /// <summary>
-        /// Test the properties of a <see cref="Attribute"/> with a zeroed <see cref="Attribute.Maximum"/>
+        /// Test the properties of a <see cref="CharacterAttribute"/> with a zeroed <see cref="Attribute.Maximum"/>
         /// </summary>
         [Fact]
         public void OnCreateWithZero()
@@ -14,10 +14,9 @@ namespace GreedFlameTale.Tests.Model
             // Arrange // Act
             var testMeasure = new CharacterAttribute(0);
             // Assert
-            Assert.Equal<int>(0, testMeasure.Maximum);
-            Assert.Equal<int>(0, testMeasure.Value);
-            Assert.Equal<int>(0, testMeasure.Percentage);
-            Assert.True(testMeasure.IsFull);
+            Assert.Equal<long>(0, testMeasure.Maximum);
+            Assert.Equal<long>(0, testMeasure.Value);
+            Assert.Equal<ushort>(0, testMeasure.Percentage);
             Assert.True(testMeasure.IsEmpty);
         }
 
@@ -162,20 +161,6 @@ namespace GreedFlameTale.Tests.Model
             // Assert
             Assert.Equal<long>(1, testMeasure.Maximum);
             Assert.Equal<long>(0, testMeasure.Value);
-        }
-
-        /// <summary>
-        /// Verify if the equal operator works as intended, comparing value and maximum wise
-        /// </summary>
-        [Fact]
-        public void EqEqOperator()
-        {
-            // Arrange
-            var zeroOne = new CharacterAttribute(0, 1);
-            var testMeasure = new CharacterAttribute(1) - new CharacterAttribute(1);
-            // Act
-            // Assert
-            Assert.True(zeroOne == testMeasure);
         }
 
     }

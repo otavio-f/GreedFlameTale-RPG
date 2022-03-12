@@ -7,8 +7,6 @@ namespace GreedFlameTale
     {
         static void Main(string[] args)
         {
-            var x = new Game();
-            x.Mainloop();
         }
     }
 }
