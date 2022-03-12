@@ -6,13 +6,13 @@ namespace GreedFlameTale.Tests.Model
     public class MeasureTest
     {
         /// <summary>
-        /// Test the properties of a <see cref="Measure"/> with a zeroed <see cref="Measure.Maximum"/>
+        /// Test the properties of a <see cref="Attribute"/> with a zeroed <see cref="Attribute.Maximum"/>
         /// </summary>
         [Fact]
         public void OnCreateWithZero()
         {
             // Arrange // Act
-            var testMeasure = new Measure(0);
+            var testMeasure = new Attribute(0);
             // Assert
             Assert.Equal<int>(0, testMeasure.Maximum);
             Assert.Equal<int>(0, testMeasure.Value);
@@ -22,7 +22,7 @@ namespace GreedFlameTale.Tests.Model
         }
 
         /// <summary>
-        /// Test to verify if the <see cref="Measure.Maximum"/> is truncated to <see cref="ushort.MaxValue"/>
+        /// Test to verify if the <see cref="Attribute.Maximum"/> is truncated to <see cref="ushort.MaxValue"/>
         /// after creation with a value higher than the upper limit.
         /// </summary>
         [Fact]
@@ -32,14 +32,14 @@ namespace GreedFlameTale.Tests.Model
             var maximum = ushort.MaxValue + 1;
             var value = maximum;
             // Act
-            var testMeasure = new Measure(value, maximum);
+            var testMeasure = new Attribute(value, maximum);
             // Assert
             Assert.Equal<long>(ushort.MaxValue, testMeasure.Maximum);
             Assert.Equal<long>(ushort.MaxValue, testMeasure.Value);
         }
 
         /// <summary>
-        /// Verify if the <see cref="Measure.Maximum"/> and <see cref="Measure.Value"/> are truncated to <see langword="0"/>
+        /// Verify if the <see cref="Attribute.Maximum"/> and <see cref="Attribute.Value"/> are truncated to <see langword="0"/>
         /// after creation with negative maximum.
         /// </summary>
         [Fact]
@@ -49,7 +49,7 @@ namespace GreedFlameTale.Tests.Model
             var maximum = -1;
             var value = -1;
             // Act
-            var testMeasure = new Measure(value, maximum);
+            var testMeasure = new Attribute(value, maximum);
             // Assert
             Assert.Equal<long>(0, testMeasure.Maximum);
             Assert.Equal<long>(0, testMeasure.Value);
@@ -62,7 +62,7 @@ namespace GreedFlameTale.Tests.Model
         public void OffsetByNegativeOnZeroUnit()
         {
             // Arrange
-            var testMeasure = new Measure(0);
+            var testMeasure = new Attribute(0);
             // Act
             testMeasure.OffsetBy(-1);
             // Assert
@@ -77,7 +77,7 @@ namespace GreedFlameTale.Tests.Model
         public void OffsetByBigNumber()
         {
             // Arrange
-            var testMeasure = new Measure(0);
+            var testMeasure = new Attribute(0);
             // Act
             testMeasure.OffsetBy(long.MaxValue);
             // Assert
@@ -93,7 +93,7 @@ namespace GreedFlameTale.Tests.Model
         public void OffsetByCauseOverflow()
         {
             // Arrange
-            var testMeasure = new Measure(ushort.MaxValue);
+            var testMeasure = new Attribute(ushort.MaxValue);
             // Act
             testMeasure.OffsetBy(+1);
             // Assert
@@ -108,8 +108,8 @@ namespace GreedFlameTale.Tests.Model
         public void IncreaseByCauseOverflow()
         {
             // Arrange
-            var testMeasure = new Measure(ushort.MaxValue);
-            var increase = new Measure(1);
+            var testMeasure = new Attribute(ushort.MaxValue);
+            var increase = new Attribute(1);
             // Act
             testMeasure.IncreaseBy(increase);
             // Assert
@@ -124,8 +124,8 @@ namespace GreedFlameTale.Tests.Model
         public void DecreaseByCauseNegative()
         {
             // Arrange
-            var testMeasure = new Measure(0);
-            var decrease = new Measure(1);
+            var testMeasure = new Attribute(0);
+            var decrease = new Attribute(1);
             // Act
             testMeasure.DecreaseBy(decrease);
             // Assert
@@ -134,13 +134,13 @@ namespace GreedFlameTale.Tests.Model
         }
 
         /// <summary>
-        /// Verify if the sum of two <see cref="Measure"/> could cause overflow
+        /// Verify if the sum of two <see cref="Attribute"/> could cause overflow
         /// </summary>
         [Fact]
         public void SumCauseOverflow()
         {
             // Arrange
-            var maxMeasure = new Measure(ushort.MaxValue);
+            var maxMeasure = new Attribute(ushort.MaxValue);
             // Act
             var testMeasure = maxMeasure + maxMeasure;
             // Assert
@@ -149,14 +149,14 @@ namespace GreedFlameTale.Tests.Model
         }
 
         /// <summary>
-        /// Verify if the difference between two <see cref="Measure"/> could cause underflow or negative
+        /// Verify if the difference between two <see cref="Attribute"/> could cause underflow or negative
         /// </summary>
         [Fact]
         public void SubCauseNegative()
         {
             // Arrange
-            var zero = new Measure(0);
-            var one = new Measure(1);
+            var zero = new Attribute(0);
+            var one = new Attribute(1);
             // Act
             var testMeasure = zero - one;
             // Assert
@@ -171,8 +171,8 @@ namespace GreedFlameTale.Tests.Model
         public void EqEqOperator()
         {
             // Arrange
-            var zeroOne = new Measure(0, 1);
-            var testMeasure = new Measure(1) - new Measure(1);
+            var zeroOne = new Attribute(0, 1);
+            var testMeasure = new Attribute(1) - new Attribute(1);
             // Act
             // Assert
             Assert.True(zeroOne == testMeasure);
