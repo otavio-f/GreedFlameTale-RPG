@@ -1,5 +1,5 @@
 using Xunit;
-using GreedFlameTale.Model;
+using GreedFlameTale.Model.Attribute;
 
 namespace GreedFlameTale.Tests.Model
 {
@@ -12,7 +12,7 @@ namespace GreedFlameTale.Tests.Model
         public void OnCreateWithZero()
         {
             // Arrange // Act
-            var testMeasure = new Attribute(0);
+            var testMeasure = new CharacterAttribute(0);
             // Assert
             Assert.Equal<int>(0, testMeasure.Maximum);
             Assert.Equal<int>(0, testMeasure.Value);
@@ -32,7 +32,7 @@ namespace GreedFlameTale.Tests.Model
             var maximum = ushort.MaxValue + 1;
             var value = maximum;
             // Act
-            var testMeasure = new Attribute(value, maximum);
+            var testMeasure = new CharacterAttribute(value, maximum);
             // Assert
             Assert.Equal<long>(ushort.MaxValue, testMeasure.Maximum);
             Assert.Equal<long>(ushort.MaxValue, testMeasure.Value);
@@ -49,7 +49,7 @@ namespace GreedFlameTale.Tests.Model
             var maximum = -1;
             var value = -1;
             // Act
-            var testMeasure = new Attribute(value, maximum);
+            var testMeasure = new CharacterAttribute(value, maximum);
             // Assert
             Assert.Equal<long>(0, testMeasure.Maximum);
             Assert.Equal<long>(0, testMeasure.Value);
@@ -62,7 +62,7 @@ namespace GreedFlameTale.Tests.Model
         public void OffsetByNegativeOnZeroUnit()
         {
             // Arrange
-            var testMeasure = new Attribute(0);
+            var testMeasure = new CharacterAttribute(0);
             // Act
             testMeasure.OffsetBy(-1);
             // Assert
@@ -77,9 +77,9 @@ namespace GreedFlameTale.Tests.Model
         public void OffsetByBigNumber()
         {
             // Arrange
-            var testMeasure = new Attribute(0);
+            var testMeasure = new CharacterAttribute(0);
             // Act
-            testMeasure.OffsetBy(long.MaxValue);
+            testMeasure.OffsetBy(int.MaxValue);
             // Assert
             Assert.Equal<long>(ushort.MaxValue, testMeasure.Maximum);
             Assert.Equal<long>(ushort.MaxValue, testMeasure.Value);
@@ -93,7 +93,7 @@ namespace GreedFlameTale.Tests.Model
         public void OffsetByCauseOverflow()
         {
             // Arrange
-            var testMeasure = new Attribute(ushort.MaxValue);
+            var testMeasure = new CharacterAttribute(ushort.MaxValue);
             // Act
             testMeasure.OffsetBy(+1);
             // Assert
@@ -108,8 +108,8 @@ namespace GreedFlameTale.Tests.Model
         public void IncreaseByCauseOverflow()
         {
             // Arrange
-            var testMeasure = new Attribute(ushort.MaxValue);
-            var increase = new Attribute(1);
+            var testMeasure = new CharacterAttribute(ushort.MaxValue);
+            var increase = new CharacterAttribute(1);
             // Act
             testMeasure.IncreaseBy(increase);
             // Assert
@@ -124,8 +124,8 @@ namespace GreedFlameTale.Tests.Model
         public void DecreaseByCauseNegative()
         {
             // Arrange
-            var testMeasure = new Attribute(0);
-            var decrease = new Attribute(1);
+            var testMeasure = new CharacterAttribute(0);
+            var decrease = new CharacterAttribute(1);
             // Act
             testMeasure.DecreaseBy(decrease);
             // Assert
@@ -140,7 +140,7 @@ namespace GreedFlameTale.Tests.Model
         public void SumCauseOverflow()
         {
             // Arrange
-            var maxMeasure = new Attribute(ushort.MaxValue);
+            var maxMeasure = new CharacterAttribute(ushort.MaxValue);
             // Act
             var testMeasure = maxMeasure + maxMeasure;
             // Assert
@@ -155,8 +155,8 @@ namespace GreedFlameTale.Tests.Model
         public void SubCauseNegative()
         {
             // Arrange
-            var zero = new Attribute(0);
-            var one = new Attribute(1);
+            var zero = new CharacterAttribute(0);
+            var one = new CharacterAttribute(1);
             // Act
             var testMeasure = zero - one;
             // Assert
@@ -171,8 +171,8 @@ namespace GreedFlameTale.Tests.Model
         public void EqEqOperator()
         {
             // Arrange
-            var zeroOne = new Attribute(0, 1);
-            var testMeasure = new Attribute(1) - new Attribute(1);
+            var zeroOne = new CharacterAttribute(0, 1);
+            var testMeasure = new CharacterAttribute(1) - new CharacterAttribute(1);
             // Act
             // Assert
             Assert.True(zeroOne == testMeasure);
